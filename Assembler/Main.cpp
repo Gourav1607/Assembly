@@ -22,7 +22,8 @@ void PrintHelp(string ProgramName) {
 
 bool ParseArguments(int argc, char *argv[]) {
 	if (argc > 1) {
-		if (string(argv[1]).compare("/?") == 0 || string(argv[1]).compare("-h") == 0) {
+		if (string(argv[1]).compare("/?") == 0
+				|| string(argv[1]).compare("-h") == 0) {
 			PrintHelp(argv[0]);
 			exit(0);
 		}
@@ -61,9 +62,8 @@ int main(int argc, char *argv[]) {
 			if (AASM.Assemble(InputFileName, OutputFileName) == false) {
 				cout << "\n\n";
 				system("pause");
-			}
-		else
-			PrintHelp(argv[0]);
+			} else
+				PrintHelp(argv[0]);
 	} else {
 		if (GetFileNames() == true)
 			if (AASM.Assemble(InputFileName, OutputFileName) == false) {

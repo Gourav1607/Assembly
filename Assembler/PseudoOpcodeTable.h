@@ -18,16 +18,21 @@ struct PseudoOpcode {
 
 class PseudoOpcodeTable {
 	vector<PseudoOpcode> Table;
-	void InsertIntInByteForm(stringstream &ss, int Value, size_t ByteCount = 4) {
-		if ( ByteCount > 0 ) ss << setw(2) << (Value & 0x000000ff);
-		if ( ByteCount > 1 ) ss << setw(2) << ((Value >> 8) & 0x000000ff);
-		if ( ByteCount > 2 ) ss << setw(2) << ((Value >> 16) & 0x000000ff);
-		if ( ByteCount > 3 ) ss << setw(2) << ((Value >> 24) & 0x000000ff);
+	void InsertIntInByteForm(stringstream &ss, int Value,
+			size_t ByteCount = 4) {
+		if (ByteCount > 0)
+			ss << setw(2) << (Value & 0x000000ff);
+		if (ByteCount > 1)
+			ss << setw(2) << ((Value >> 8) & 0x000000ff);
+		if (ByteCount > 2)
+			ss << setw(2) << ((Value >> 16) & 0x000000ff);
+		if (ByteCount > 3)
+			ss << setw(2) << ((Value >> 24) & 0x000000ff);
 	}
 
 	int Search(const string &Line) {
 		Scanner Sc(Line);
-		string  VarName, PseudoOpcode;
+		string VarName, PseudoOpcode;
 		VarName = Sc.GetIdentifier();
 
 		if (VarName.empty() || Sc.EndReached())
@@ -48,8 +53,8 @@ class PseudoOpcodeTable {
 
 public:
 	PseudoOpcodeTable() {
-		Table.push_back({ "DD", 4 });
-		Table.push_back({ "DW", 2 });
+		Table.push_back( { "DD", 4 });
+		Table.push_back( { "DW", 2 });
 	}
 
 	bool IsPseudoOpcode(const string &Line) {
@@ -59,7 +64,7 @@ public:
 			return true;
 	}
 
-	int  GetTypeSize(const string &Line) {
+	int GetTypeSize(const string &Line) {
 		int index = Search(Line);
 		if (index == -1)
 			return -1;
@@ -109,6 +114,6 @@ public:
 		}
 		return Code;
 	}
-}POT;
+} POT;
 
 #endif

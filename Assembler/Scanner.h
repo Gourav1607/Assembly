@@ -23,7 +23,7 @@ class Scanner {
 		if (i != Line.npos)
 			Line.erase(i, Line.npos);
 
-		for (size_t i = 0; i < Line.length(); )
+		for (size_t i = 0; i < Line.length();)
 			if (isspace(Line[i]))
 				Line.erase(Line.begin() + i);
 			else
@@ -38,10 +38,12 @@ class Scanner {
 		i = 0;
 		while (i < Line.length()) {
 			string Token;
-			while (i < Line.length() && (Line[i] == ' ' || Line[i] == '\t' || Line[i] == ','))
+			while (i < Line.length()
+					&& (Line[i] == ' ' || Line[i] == '\t' || Line[i] == ','))
 				i++;
 
-			while (i < Line.length() && Line[i] != ' ' && Line[i] != '\t' && Line[i] != ',') {
+			while (i < Line.length() && Line[i] != ' ' && Line[i] != '\t'
+					&& Line[i] != ',') {
 				Token.push_back(Line[i]);
 				i++;
 			}
@@ -52,11 +54,11 @@ class Scanner {
 	}
 
 public:
-	Scanner(const string &Line){
+	Scanner(const string &Line) {
 		SetLine(Line);
 	}
 
-    void SetLine(const string &Line) {
+	void SetLine(const string &Line) {
 		TokenIndex = 0;
 		Tokens.clear();
 		Label.clear();
@@ -107,7 +109,7 @@ public:
 			Result = false;
 
 		if (Token.length() > 0 && !isalpha(Token[0]) && Token[0] != '_')
-		Result = false;
+			Result = false;
 
 		for (size_t i = 1; i < Token.length(); i++)
 			if (!isalnum(Token[i])) {
@@ -121,7 +123,7 @@ public:
 		return !Label.empty();
 	}
 
-    string GetLabel() {
+	string GetLabel() {
 		if (IsIdentifier(Label))
 			return Label;
 		else

@@ -30,16 +30,16 @@ public:
 		if (Search(Name) != -1)
 			return -1;
 
-		Table.push_back({ Name, Type, Location });
+		Table.push_back( { Name, Type, Location });
 		return Table.size() - 1;
 	}
 
 	int GetLocation(const string &Name) {
 		int index = Search(Name);
-		if ( index != -1 )
+		if (index != -1)
 			return Table[index].Location;
 		return -1;
 	}
-}SYMTAB;
+} SYMTAB;
 
 #endif

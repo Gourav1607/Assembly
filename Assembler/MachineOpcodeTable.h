@@ -25,7 +25,7 @@ struct OpcodeName {
 struct Opcode {
 	OpcodeName Name;
 	int Code;
-	int	Size;
+	int Size;
 };
 
 class MachineOpcodeTable {
@@ -33,7 +33,7 @@ class MachineOpcodeTable {
 
 	int Search(const string &Line) {
 		Scanner Sc(Line);
-		string  Inst, Op1, Op2;
+		string Inst, Op1, Op2;
 
 		for (size_t i = 0; i < Table.size(); i++) {
 			Sc.ResetTokenIndex();
@@ -70,41 +70,46 @@ class MachineOpcodeTable {
 		return -1;
 	}
 
-	void InsertIntInByteForm(stringstream &ss, int Value, size_t ByteCount = 4) {
-		if ( ByteCount > 0 ) ss << setw(2) << (Value & 0x000000ff);
-		if ( ByteCount > 1 ) ss << setw(2) << ((Value >> 8) & 0x000000ff);
-		if ( ByteCount > 2 ) ss << setw(2) << ((Value >> 16) & 0x000000ff);
-		if ( ByteCount > 3 ) ss << setw(2) << ((Value >> 24) & 0x000000ff);
+	void InsertIntInByteForm(stringstream &ss, int Value,
+			size_t ByteCount = 4) {
+		if (ByteCount > 0)
+			ss << setw(2) << (Value & 0x000000ff);
+		if (ByteCount > 1)
+			ss << setw(2) << ((Value >> 8) & 0x000000ff);
+		if (ByteCount > 2)
+			ss << setw(2) << ((Value >> 16) & 0x000000ff);
+		if (ByteCount > 3)
+			ss << setw(2) << ((Value >> 24) & 0x000000ff);
 	}
 
 public:
 	MachineOpcodeTable() {
-		Table.push_back({ { "MVI",   "A", "", 2 }, 0, 5 });
-		Table.push_back({ { "MVI",   "B", "", 2 }, 1, 5 });
-		Table.push_back({ { "MVI",   "C", "", 2 }, 2, 5 });
-		Table.push_back({ { "MVI",   "I", "", 2 }, 3, 5 });
-		Table.push_back({ { "LOAD",  "",  "", 1 }, 4, 5 });
-		Table.push_back({ { "STORE", "",  "", 1 }, 5, 5 });
-		Table.push_back({ { "LOADI", "",  "", 0 }, 6, 1 });
-		Table.push_back({ { "STORI", "",  "", 0 }, 7, 1 });
-		Table.push_back({ { "ADD",   "B", "", 1 }, 8, 1 });
-		Table.push_back({ { "ADD",   "C", "", 1 }, 9, 1 });
-		Table.push_back({ { "MOV",   "A", "B", 2 }, 10, 1 });
-		Table.push_back({ { "MOV",   "A", "C", 2 }, 11, 1 });
-		Table.push_back({ { "MOV",   "B", "C", 2 }, 12, 1 });
-		Table.push_back({ { "MOV",   "B", "A", 2 }, 13, 1 });
-		Table.push_back({ { "MOV",   "C", "A", 2 }, 14, 1 });
-		Table.push_back({ { "MOV",   "C", "B", 2 }, 15, 1 });
-		Table.push_back({ { "INC",   "A", "", 1 }, 16, 1 });
-		Table.push_back({ { "INC",   "B", "", 1 }, 17, 1 });
-		Table.push_back({ { "INC",   "C", "", 1 }, 18, 1 });
-		Table.push_back({ { "CMP",   "A", "", 2 }, 19, 5 });
-		Table.push_back({ { "CMP",   "B", "", 2 }, 20, 5 });
-		Table.push_back({ { "CMP",   "C", "", 2 }, 21, 5 });
-		Table.push_back({ { "ADDI",  "",  "", 1 }, 22, 5 });
-		Table.push_back({ { "JE",    "",  "", 1 }, 23, 5 });
-		Table.push_back({ { "JMP",   "",  "", 1 }, 24, 5 });
-		Table.push_back({ { "STOP",  "",  "", 0 }, 25, 1 });
+		Table.push_back( { { "MVI", "A", "", 2 }, 0, 5 });
+		Table.push_back( { { "MVI", "B", "", 2 }, 1, 5 });
+		Table.push_back( { { "MVI", "C", "", 2 }, 2, 5 });
+		Table.push_back( { { "MVI", "I", "", 2 }, 3, 5 });
+		Table.push_back( { { "LOAD", "", "", 1 }, 4, 5 });
+		Table.push_back( { { "STORE", "", "", 1 }, 5, 5 });
+		Table.push_back( { { "LOADI", "", "", 0 }, 6, 1 });
+		Table.push_back( { { "STORI", "", "", 0 }, 7, 1 });
+		Table.push_back( { { "ADD", "B", "", 1 }, 8, 1 });
+		Table.push_back( { { "ADD", "C", "", 1 }, 9, 1 });
+		Table.push_back( { { "MOV", "A", "B", 2 }, 10, 1 });
+		Table.push_back( { { "MOV", "A", "C", 2 }, 11, 1 });
+		Table.push_back( { { "MOV", "B", "C", 2 }, 12, 1 });
+		Table.push_back( { { "MOV", "B", "A", 2 }, 13, 1 });
+		Table.push_back( { { "MOV", "C", "A", 2 }, 14, 1 });
+		Table.push_back( { { "MOV", "C", "B", 2 }, 15, 1 });
+		Table.push_back( { { "INC", "A", "", 1 }, 16, 1 });
+		Table.push_back( { { "INC", "B", "", 1 }, 17, 1 });
+		Table.push_back( { { "INC", "C", "", 1 }, 18, 1 });
+		Table.push_back( { { "CMP", "A", "", 2 }, 19, 5 });
+		Table.push_back( { { "CMP", "B", "", 2 }, 20, 5 });
+		Table.push_back( { { "CMP", "C", "", 2 }, 21, 5 });
+		Table.push_back( { { "ADDI", "", "", 1 }, 22, 5 });
+		Table.push_back( { { "JE", "", "", 1 }, 23, 5 });
+		Table.push_back( { { "JMP", "", "", 1 }, 24, 5 });
+		Table.push_back( { { "STOP", "", "", 0 }, 25, 1 });
 	}
 
 	int GetSize(const string &Line) {
@@ -115,7 +120,7 @@ public:
 			return Table[index].Size;
 	}
 
-    bool IsMachineOpcode(const string &Line) {
+	bool IsMachineOpcode(const string &Line) {
 		if (Search(Line) == -1)
 			return false;
 		else
@@ -130,9 +135,10 @@ public:
 
 		if ((Index = Search(Line)) != -1) {
 			CodeStream << hex << uppercase << setfill('0');
-        InsertIntInByteForm(CodeStream, Table[Index].Code, 1);
-        Sc.GetWord();
-			if (Table[Index].Name.OpNumber > 0 && Table[Index].Name.Op1.empty() == true) {
+			InsertIntInByteForm(CodeStream, Table[Index].Code, 1);
+			Sc.GetWord();
+			if (Table[Index].Name.OpNumber > 0
+					&& Table[Index].Name.Op1.empty() == true) {
 				string Op1 = Sc.GetToken();
 				if (Sc.IsIdentifier(Op1)) {
 					int Op1Loc = SYMTAB.GetLocation(Op1);
@@ -145,7 +151,8 @@ public:
 				}
 			}
 
-			if (Table[Index].Name.OpNumber > 1 && Table[Index].Name.Op2.empty() == true) {
+			if (Table[Index].Name.OpNumber > 1
+					&& Table[Index].Name.Op2.empty() == true) {
 				if (Table[Index].Name.Op1.empty() == false)
 					Sc.GetToken();
 
@@ -164,6 +171,6 @@ public:
 		CodeStream >> Code;
 		return Code;
 	}
-}MOT;
+} MOT;
 
 #endif
