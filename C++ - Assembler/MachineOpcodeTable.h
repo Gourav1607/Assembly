@@ -15,38 +15,46 @@
 #include "ErrorList.h"
 
 using namespace std;
-struct OpcodeName {
+struct OpcodeName
+{
 	string Inst;
 	string Op1;
 	string Op2;
 	int OpNumber;
 };
 
-struct Opcode {
+struct Opcode
+{
 	OpcodeName Name;
 	int Code;
 	int Size;
 };
 
-class MachineOpcodeTable {
+class MachineOpcodeTable
+{
 	vector<Opcode> Table;
 
-	int Search(const string &Line) {
+	int Search(const string &Line)
+	{
 		Scanner Sc(Line);
 		string Inst, Op1, Op2;
 
-		for (size_t i = 0; i < Table.size(); i++) {
+		for (size_t i = 0; i < Table.size(); i++)
+		{
 			Sc.ResetTokenIndex();
 			Inst = Sc.GetWord();
 			if (Scanner::CheckEqual(Table[i].Name.Inst, Inst) == false)
 				continue;
 			if (Table[i].Name.OpNumber == 0 && Sc.EndReached())
 				return i;
-			if (Table[i].Name.Op1.empty()) {
+			if (Table[i].Name.Op1.empty())
+			{
 				Op1 = Sc.GetToken();
 				if (Sc.IsIdentifier(Op1) == false && Sc.IsInt(Op1) == false)
 					continue;
-			} else {
+			}
+			else
+			{
 				Op1 = Sc.GetWord();
 				if (Scanner::CheckEqual(Table[i].Name.Op1, Op1) == false)
 					continue;
@@ -54,11 +62,14 @@ class MachineOpcodeTable {
 
 			if (Table[i].Name.OpNumber == 1 && Sc.EndReached())
 				return i;
-			if (Table[i].Name.Op2.empty()) {
+			if (Table[i].Name.Op2.empty())
+			{
 				Op2 = Sc.GetToken();
 				if (Sc.IsIdentifier(Op2) == false && Sc.IsInt(Op2) == false)
 					continue;
-			} else {
+			}
+			else
+			{
 				Op2 = Sc.GetWord();
 				if (Scanner::CheckEqual(Table[i].Name.Op2, Op2) == false)
 					continue;
@@ -71,7 +82,8 @@ class MachineOpcodeTable {
 	}
 
 	void InsertIntInByteForm(stringstream &ss, int Value,
-			size_t ByteCount = 4) {
+							 size_t ByteCount = 4)
+	{
 		if (ByteCount > 0)
 			ss << setw(2) << (Value & 0x000000ff);
 		if (ByteCount > 1)
@@ -83,36 +95,38 @@ class MachineOpcodeTable {
 	}
 
 public:
-	MachineOpcodeTable() {
-		Table.push_back( { { "MVI", "A", "", 2 }, 0, 5 });
-		Table.push_back( { { "MVI", "B", "", 2 }, 1, 5 });
-		Table.push_back( { { "MVI", "C", "", 2 }, 2, 5 });
-		Table.push_back( { { "MVI", "I", "", 2 }, 3, 5 });
-		Table.push_back( { { "LOAD", "", "", 1 }, 4, 5 });
-		Table.push_back( { { "STORE", "", "", 1 }, 5, 5 });
-		Table.push_back( { { "LOADI", "", "", 0 }, 6, 1 });
-		Table.push_back( { { "STORI", "", "", 0 }, 7, 1 });
-		Table.push_back( { { "ADD", "B", "", 1 }, 8, 1 });
-		Table.push_back( { { "ADD", "C", "", 1 }, 9, 1 });
-		Table.push_back( { { "MOV", "A", "B", 2 }, 10, 1 });
-		Table.push_back( { { "MOV", "A", "C", 2 }, 11, 1 });
-		Table.push_back( { { "MOV", "B", "C", 2 }, 12, 1 });
-		Table.push_back( { { "MOV", "B", "A", 2 }, 13, 1 });
-		Table.push_back( { { "MOV", "C", "A", 2 }, 14, 1 });
-		Table.push_back( { { "MOV", "C", "B", 2 }, 15, 1 });
-		Table.push_back( { { "INC", "A", "", 1 }, 16, 1 });
-		Table.push_back( { { "INC", "B", "", 1 }, 17, 1 });
-		Table.push_back( { { "INC", "C", "", 1 }, 18, 1 });
-		Table.push_back( { { "CMP", "A", "", 2 }, 19, 5 });
-		Table.push_back( { { "CMP", "B", "", 2 }, 20, 5 });
-		Table.push_back( { { "CMP", "C", "", 2 }, 21, 5 });
-		Table.push_back( { { "ADDI", "", "", 1 }, 22, 5 });
-		Table.push_back( { { "JE", "", "", 1 }, 23, 5 });
-		Table.push_back( { { "JMP", "", "", 1 }, 24, 5 });
-		Table.push_back( { { "STOP", "", "", 0 }, 25, 1 });
+	MachineOpcodeTable()
+	{
+		Table.push_back({{"MVI", "A", "", 2}, 0, 5});
+		Table.push_back({{"MVI", "B", "", 2}, 1, 5});
+		Table.push_back({{"MVI", "C", "", 2}, 2, 5});
+		Table.push_back({{"MVI", "I", "", 2}, 3, 5});
+		Table.push_back({{"LOAD", "", "", 1}, 4, 5});
+		Table.push_back({{"STORE", "", "", 1}, 5, 5});
+		Table.push_back({{"LOADI", "", "", 0}, 6, 1});
+		Table.push_back({{"STORI", "", "", 0}, 7, 1});
+		Table.push_back({{"ADD", "B", "", 1}, 8, 1});
+		Table.push_back({{"ADD", "C", "", 1}, 9, 1});
+		Table.push_back({{"MOV", "A", "B", 2}, 10, 1});
+		Table.push_back({{"MOV", "A", "C", 2}, 11, 1});
+		Table.push_back({{"MOV", "B", "C", 2}, 12, 1});
+		Table.push_back({{"MOV", "B", "A", 2}, 13, 1});
+		Table.push_back({{"MOV", "C", "A", 2}, 14, 1});
+		Table.push_back({{"MOV", "C", "B", 2}, 15, 1});
+		Table.push_back({{"INC", "A", "", 1}, 16, 1});
+		Table.push_back({{"INC", "B", "", 1}, 17, 1});
+		Table.push_back({{"INC", "C", "", 1}, 18, 1});
+		Table.push_back({{"CMP", "A", "", 2}, 19, 5});
+		Table.push_back({{"CMP", "B", "", 2}, 20, 5});
+		Table.push_back({{"CMP", "C", "", 2}, 21, 5});
+		Table.push_back({{"ADDI", "", "", 1}, 22, 5});
+		Table.push_back({{"JE", "", "", 1}, 23, 5});
+		Table.push_back({{"JMP", "", "", 1}, 24, 5});
+		Table.push_back({{"STOP", "", "", 0}, 25, 1});
 	}
 
-	int GetSize(const string &Line) {
+	int GetSize(const string &Line)
+	{
 		int index = Search(Line);
 		if (index == -1)
 			return -1;
@@ -120,50 +134,59 @@ public:
 			return Table[index].Size;
 	}
 
-	bool IsMachineOpcode(const string &Line) {
+	bool IsMachineOpcode(const string &Line)
+	{
 		if (Search(Line) == -1)
 			return false;
 		else
 			return true;
 	}
 
-	string GetCode(const string &Line) {
+	string GetCode(const string &Line)
+	{
 		stringstream CodeStream;
 		string Code;
 		int Index = -1;
 		Scanner Sc(Line);
 
-		if ((Index = Search(Line)) != -1) {
+		if ((Index = Search(Line)) != -1)
+		{
 			CodeStream << hex << uppercase << setfill('0');
 			InsertIntInByteForm(CodeStream, Table[Index].Code, 1);
 			Sc.GetWord();
-			if (Table[Index].Name.OpNumber > 0
-					&& Table[Index].Name.Op1.empty() == true) {
+			if (Table[Index].Name.OpNumber > 0 && Table[Index].Name.Op1.empty() == true)
+			{
 				string Op1 = Sc.GetToken();
-				if (Sc.IsIdentifier(Op1)) {
+				if (Sc.IsIdentifier(Op1))
+				{
 					int Op1Loc = SYMTAB.GetLocation(Op1);
 					if (Op1Loc != -1)
 						InsertIntInByteForm(CodeStream, Op1Loc);
 					else
 						Errors.Add(Errors.E_SYMBOL_NOT_DEFINED);
-				} else if (Sc.IsInt(Op1)) {
+				}
+				else if (Sc.IsInt(Op1))
+				{
 					InsertIntInByteForm(CodeStream, stoi(Op1));
 				}
 			}
 
-			if (Table[Index].Name.OpNumber > 1
-					&& Table[Index].Name.Op2.empty() == true) {
+			if (Table[Index].Name.OpNumber > 1 && Table[Index].Name.Op2.empty() == true)
+			{
 				if (Table[Index].Name.Op1.empty() == false)
 					Sc.GetToken();
 
 				string Op2 = Sc.GetToken();
-				if (Sc.IsIdentifier(Op2)) {
+				if (Sc.IsIdentifier(Op2))
+				{
 					int Op2Loc = SYMTAB.GetLocation(Op2);
 					if (Op2Loc != -1)
 						InsertIntInByteForm(CodeStream, Op2Loc);
 					else
 						Errors.Add(Errors.E_SYMBOL_NOT_DEFINED);
-				} else if (Sc.IsInt(Op2)) {
+				}
+				else if (Sc.IsInt(Op2))
+				{
 					InsertIntInByteForm(CodeStream, stoi(Op2));
 				}
 			}

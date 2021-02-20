@@ -11,15 +11,18 @@
 #include "ErrorList.h"
 using namespace std;
 
-struct PseudoOpcode {
+struct PseudoOpcode
+{
 	string Name;
 	int Size;
 };
 
-class PseudoOpcodeTable {
+class PseudoOpcodeTable
+{
 	vector<PseudoOpcode> Table;
 	void InsertIntInByteForm(stringstream &ss, int Value,
-			size_t ByteCount = 4) {
+							 size_t ByteCount = 4)
+	{
 		if (ByteCount > 0)
 			ss << setw(2) << (Value & 0x000000ff);
 		if (ByteCount > 1)
@@ -30,7 +33,8 @@ class PseudoOpcodeTable {
 			ss << setw(2) << ((Value >> 24) & 0x000000ff);
 	}
 
-	int Search(const string &Line) {
+	int Search(const string &Line)
+	{
 		Scanner Sc(Line);
 		string VarName, PseudoOpcode;
 		VarName = Sc.GetIdentifier();
@@ -40,9 +44,11 @@ class PseudoOpcodeTable {
 
 		PseudoOpcode = Sc.GetWord();
 		for (size_t i = 0; i < Table.size(); i++)
-			if (Scanner::CheckEqual(Table[i].Name, PseudoOpcode) == true) {
+			if (Scanner::CheckEqual(Table[i].Name, PseudoOpcode) == true)
+			{
 				while (!Sc.EndReached())
-					if (Sc.GetInt() == -1) {
+					if (Sc.GetInt() == -1)
+					{
 						Errors.Add(Errors.E_INVALID_OPERAND);
 						return -1;
 					}
@@ -52,19 +58,22 @@ class PseudoOpcodeTable {
 	}
 
 public:
-	PseudoOpcodeTable() {
-		Table.push_back( { "DD", 4 });
-		Table.push_back( { "DW", 2 });
+	PseudoOpcodeTable()
+	{
+		Table.push_back({"DD", 4});
+		Table.push_back({"DW", 2});
 	}
 
-	bool IsPseudoOpcode(const string &Line) {
+	bool IsPseudoOpcode(const string &Line)
+	{
 		if (Search(Line) == -1)
 			return false;
 		else
 			return true;
 	}
 
-	int GetTypeSize(const string &Line) {
+	int GetTypeSize(const string &Line)
+	{
 		int index = Search(Line);
 		if (index == -1)
 			return -1;
@@ -72,7 +81,8 @@ public:
 			return Table[index].Size;
 	}
 
-	int GetOperandsSize(const string &Line) {
+	int GetOperandsSize(const string &Line)
+	{
 		Scanner Sc(Line);
 		int Index = Search(Line);
 		int OperandCount = 0;
@@ -91,18 +101,21 @@ public:
 		return OperandCount * Table[Index].Size;
 	}
 
-	string GetVariableName(const string &Line) {
+	string GetVariableName(const string &Line)
+	{
 		Scanner Sc(Line);
 		return Sc.GetIdentifier();
 	}
 
-	string GetCode(const string &Line) {
+	string GetCode(const string &Line)
+	{
 		stringstream CodeStream;
 		string Code;
 		int Index = Search(Line);
 		Scanner Sc(Line);
 
-		if (Index != -1) {
+		if (Index != -1)
+		{
 			CodeStream << hex << uppercase << setfill('0');
 			Sc.GetIdentifier();
 			Sc.GetWord();

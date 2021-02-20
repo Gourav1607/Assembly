@@ -10,15 +10,18 @@
 #include "vector"
 using namespace std;
 
-struct Symbol {
+struct Symbol
+{
 	string Name;
 	string Type;
 	int Location;
 };
 
-class SymbolTable {
+class SymbolTable
+{
 	vector<Symbol> Table;
-	int Search(const string &Name) {
+	int Search(const string &Name)
+	{
 		for (size_t i = 0; i < Table.size(); i++)
 			if (Table[i].Name.compare(Name) == 0)
 				return i;
@@ -26,15 +29,17 @@ class SymbolTable {
 	}
 
 public:
-	int Insert(string Name, string Type, int Location) {
+	int Insert(string Name, string Type, int Location)
+	{
 		if (Search(Name) != -1)
 			return -1;
 
-		Table.push_back( { Name, Type, Location });
+		Table.push_back({Name, Type, Location});
 		return Table.size() - 1;
 	}
 
-	int GetLocation(const string &Name) {
+	int GetLocation(const string &Name)
+	{
 		int index = Search(Name);
 		if (index != -1)
 			return Table[index].Location;

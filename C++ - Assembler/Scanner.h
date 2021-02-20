@@ -11,12 +11,14 @@
 #include "cctype"
 using namespace std;
 
-class Scanner {
+class Scanner
+{
 	string Label;
 	vector<string> Tokens;
 	size_t TokenIndex = 0;
 
-	void ApplyKungfu(string Line) {
+	void ApplyKungfu(string Line)
+	{
 		size_t i = 0;
 
 		i = Line.find_first_of(';');
@@ -30,20 +32,21 @@ class Scanner {
 				break;
 
 		i = Line.find_first_of(':');
-		if (i != Line.npos) {
+		if (i != Line.npos)
+		{
 			Label = Line.substr(0, i);
 			Line.erase(0, i + 1);
 		}
 
 		i = 0;
-		while (i < Line.length()) {
+		while (i < Line.length())
+		{
 			string Token;
-			while (i < Line.length()
-					&& (Line[i] == ' ' || Line[i] == '\t' || Line[i] == ','))
+			while (i < Line.length() && (Line[i] == ' ' || Line[i] == '\t' || Line[i] == ','))
 				i++;
 
-			while (i < Line.length() && Line[i] != ' ' && Line[i] != '\t'
-					&& Line[i] != ',') {
+			while (i < Line.length() && Line[i] != ' ' && Line[i] != '\t' && Line[i] != ',')
+			{
 				Token.push_back(Line[i]);
 				i++;
 			}
@@ -54,11 +57,13 @@ class Scanner {
 	}
 
 public:
-	Scanner(const string &Line) {
+	Scanner(const string &Line)
+	{
 		SetLine(Line);
 	}
 
-	void SetLine(const string &Line) {
+	void SetLine(const string &Line)
+	{
 		TokenIndex = 0;
 		Tokens.clear();
 		Label.clear();
@@ -66,44 +71,51 @@ public:
 		ApplyKungfu(Line);
 	}
 
-	bool EndReached() {
+	bool EndReached()
+	{
 		if (TokenIndex >= Tokens.size())
 			return true;
 		else
 			return false;
 	}
 
-	void ResetTokenIndex() {
+	void ResetTokenIndex()
+	{
 		TokenIndex = 0;
 	}
 
-	bool IsWord(const string &Token) {
+	bool IsWord(const string &Token)
+	{
 		bool Result = true;
 		if (Token.empty())
 			Result = false;
 
 		for (size_t i = 0; i < Token.length(); i++)
-			if (!isalpha(Token[i])) {
+			if (!isalpha(Token[i]))
+			{
 				Result = false;
 				break;
 			}
 		return Result;
 	}
 
-	bool IsInt(const string &Token) {
+	bool IsInt(const string &Token)
+	{
 		bool Result = true;
 		if (Token.empty())
 			Result = false;
 
 		for (size_t i = 0; i < Token.length(); i++)
-			if (!isdigit(Token[i])) {
+			if (!isdigit(Token[i]))
+			{
 				Result = false;
 				break;
 			}
 		return Result;
 	}
 
-	bool IsIdentifier(const string &Token) {
+	bool IsIdentifier(const string &Token)
+	{
 		bool Result = true;
 		if (Token.empty())
 			Result = false;
@@ -112,64 +124,77 @@ public:
 			Result = false;
 
 		for (size_t i = 1; i < Token.length(); i++)
-			if (!isalnum(Token[i])) {
+			if (!isalnum(Token[i]))
+			{
 				Result = false;
 				break;
 			}
 		return Result;
 	}
 
-	bool IsLabelPresent() {
+	bool IsLabelPresent()
+	{
 		return !Label.empty();
 	}
 
-	string GetLabel() {
+	string GetLabel()
+	{
 		if (IsIdentifier(Label))
 			return Label;
 		else
 			return "";
 	}
 
-	string GetWord() {
+	string GetWord()
+	{
 		string Word;
-		if (!EndReached() && IsWord(Tokens[TokenIndex])) {
+		if (!EndReached() && IsWord(Tokens[TokenIndex]))
+		{
 			Word = Tokens[TokenIndex];
 			++TokenIndex;
 		}
 		return Word;
 	}
 
-	int GetInt() {
+	int GetInt()
+	{
 		int x = -1;
-		if (!EndReached() && IsInt(Tokens[TokenIndex])) {
+		if (!EndReached() && IsInt(Tokens[TokenIndex]))
+		{
 			x = stoi(Tokens[TokenIndex]);
 			++TokenIndex;
 		}
 		return x;
 	}
 
-	string GetIdentifier() {
+	string GetIdentifier()
+	{
 		string Id;
-		if (!EndReached() && IsIdentifier(Tokens[TokenIndex])) {
+		if (!EndReached() && IsIdentifier(Tokens[TokenIndex]))
+		{
 			Id = Tokens[TokenIndex];
 			++TokenIndex;
 		}
 		return Id;
 	}
 
-	string GetToken() {
+	string GetToken()
+	{
 		string Token;
-		if (!EndReached()) {
+		if (!EndReached())
+		{
 			Token = Tokens[TokenIndex];
 			++TokenIndex;
 		}
 		return Token;
 	}
 
-	static bool CheckEqual(const string &Str1, const string &Str2) {
+	static bool CheckEqual(const string &Str1, const string &Str2)
+	{
 		if (Str1.length() != Str2.length())
 			return false;
-		for (size_t i = 0; i < Str1.length(); i++) {
+		for (size_t i = 0; i < Str1.length(); i++)
+		{
 			if (tolower(Str1[i]) != tolower(Str2[i]))
 				return false;
 		}

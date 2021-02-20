@@ -21,11 +21,13 @@
 #define TYPE_LABEL "LABEL"
 #define TYPE_VAR "VAR"
 
-class Assembler {
+class Assembler
+{
 	ifstream InputFile;
 	ofstream OutputFile;
 
-	int GetMnemonicType(const string &Line) {
+	int GetMnemonicType(const string &Line)
+	{
 		Scanner Sc(Line);
 		if (Sc.EndReached() || Line.empty())
 			return MNEMONIC_TYPE_IGNORE;
@@ -37,25 +39,29 @@ class Assembler {
 			return MNEMONIC_TYPE_INVALID;
 	}
 
-	bool PassI() {
+	bool PassI()
+	{
 		int LC = 0, LineNumber = 1;
 		string Line, Label, VarName;
 		Errors.Clear();
 		InputFile.clear();
 		InputFile.seekg(0);
 
-		while (InputFile.eof() == false) {
+		while (InputFile.eof() == false)
+		{
 			getline(InputFile, Line);
 			Scanner Sc(Line);
 			Errors.SetCurrentLine(LineNumber);
 			Label = Sc.GetLabel();
-			if (Sc.IsLabelPresent() == true && Label.empty()) {
+			if (Sc.IsLabelPresent() == true && Label.empty())
+			{
 				Errors.Add(Errors.E_INVALID_LABEL);
 				++LineNumber;
 				continue;
 			}
 
-			switch (GetMnemonicType(Line)) {
+			switch (GetMnemonicType(Line))
+			{
 			case MNEMONIC_TYPE_MO:
 				if (Sc.IsLabelPresent())
 					SYMTAB.Insert(Label, TYPE_LABEL, LC);
@@ -86,21 +92,25 @@ class Assembler {
 		return Errors.IsEmpty() ? true : false;
 	}
 
-	bool PassII() {
+	bool PassII()
+	{
 		int LC = 0, LineNumber = 1;
 		string Line, Code;
 		Errors.Clear();
 		InputFile.clear();
 		InputFile.seekg(0);
 		OutputFile.seekp(0);
-		while (InputFile.eof() == false) {
+		while (InputFile.eof() == false)
+		{
 			getline(InputFile, Line);
 			Errors.SetCurrentLine(LineNumber);
 
-			switch (GetMnemonicType(Line)) {
+			switch (GetMnemonicType(Line))
+			{
 			case MNEMONIC_TYPE_MO:
 				Code = MOT.GetCode(Line);
-				if (!Code.empty()) {
+				if (!Code.empty())
+				{
 					OutputFile << Code << "                 : " << Line << endl;
 					LC += MOT.GetSize(Line);
 				}
@@ -108,7 +118,8 @@ class Assembler {
 
 			case MNEMONIC_TYPE_PO:
 				Code = POT.GetCode(Line);
-				if (!Code.empty()) {
+				if (!Code.empty())
+				{
 					OutputFile << Code << "                 :" << Line << endl;
 					LC += POT.GetOperandsSize(Line);
 				}
@@ -131,25 +142,36 @@ class Assembler {
 	}
 
 public:
-	bool Assemble(const string &InputFileName, const string &OutputFileName) {
+	bool Assemble(const string &InputFileName, const string &OutputFileName)
+	{
 		InputFile.open(InputFileName);
-		if (InputFile.good()) {
+		if (InputFile.good())
+		{
 			OutputFile.open(OutputFileName, ios::trunc);
-			if (OutputFile.good()) {
-				if (PassI() == true) {
-					if (PassII() == true) {
+			if (OutputFile.good())
+			{
+				if (PassI() == true)
+				{
+					if (PassII() == true)
+					{
 						return true;
-					} else {
+					}
+					else
+					{
 						cout << "\n PassII failed";
 						Errors.Display();
 					}
-				} else {
+				}
+				else
+				{
 					cout << "\n PassI failed";
 					Errors.Display();
 				}
-			} else
+			}
+			else
 				cout << "\nError! Could not open output file for writting";
-		} else
+		}
+		else
 			cout << "\nError! Could not open input file for reading";
 
 		if (InputFile.is_open())

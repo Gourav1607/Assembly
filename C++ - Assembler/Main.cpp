@@ -11,7 +11,8 @@ string InputFileName;
 string OutputFileName;
 string OutputExtention = ".obj";
 
-void PrintHelp(string ProgramName) {
+void PrintHelp(string ProgramName)
+{
 	cout << "\n AASM  2.4";
 	cout << "\n\n Usage : " << ProgramName << " [/? | -h]";
 	cout << "\n         " << ProgramName << " <InputFile> <OutputFile>";
@@ -20,10 +21,12 @@ void PrintHelp(string ProgramName) {
 	cout << "\n OutputFile     Binary output file namen\n\n";
 }
 
-bool ParseArguments(int argc, char *argv[]) {
-	if (argc > 1) {
-		if (string(argv[1]).compare("/?") == 0
-				|| string(argv[1]).compare("-h") == 0) {
+bool ParseArguments(int argc, char *argv[])
+{
+	if (argc > 1)
+	{
+		if (string(argv[1]).compare("/?") == 0 || string(argv[1]).compare("-h") == 0)
+		{
 			PrintHelp(argv[0]);
 			exit(0);
 		}
@@ -41,7 +44,8 @@ bool ParseArguments(int argc, char *argv[]) {
 		return true;
 }
 
-bool GetFileNames() {
+bool GetFileNames()
+{
 	cout << "\n\nProvide input and output file names [Press Enter to Quit]";
 	cout << "\n\nInput File : ";
 	getline(cin, InputFileName);
@@ -56,17 +60,24 @@ bool GetFileNames() {
 	return true;
 }
 
-int main(int argc, char *argv[]) {
-	if (argc > 1) {
+int main(int argc, char *argv[])
+{
+	if (argc > 1)
+	{
 		if (ParseArguments(argc, argv) == true)
-			if (AASM.Assemble(InputFileName, OutputFileName) == false) {
+			if (AASM.Assemble(InputFileName, OutputFileName) == false)
+			{
 				cout << "\n\n";
 				system("pause");
-			} else
+			}
+			else
 				PrintHelp(argv[0]);
-	} else {
+	}
+	else
+	{
 		if (GetFileNames() == true)
-			if (AASM.Assemble(InputFileName, OutputFileName) == false) {
+			if (AASM.Assemble(InputFileName, OutputFileName) == false)
+			{
 				cout << "\n\n";
 				system("pause");
 			}
